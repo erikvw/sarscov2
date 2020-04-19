@@ -5,7 +5,27 @@ from django.utils.safestring import mark_safe
 fieldsets = [
     (None, {"fields": ("subject_visit", "report_datetime")}),
     (
-        "Part 1: Economics",
+        "Disease Burden",
+        {
+            "fields": (
+                "hiv_pos",
+                "hiv_pos_year",
+                "months_on_art",
+                "diabetic",
+                "diabetic_year",
+                "diabetic_on_meds",
+                "hypertensive",
+                "hypertensive_year",
+                "hypertensive_on_meds",
+            )
+        },
+    ),
+    (
+        "Indicators",
+        {"fields": ("weight", "height", "sys_blood_pressure", "dia_blood_pressure",)},
+    ),
+    (
+        "Economics",
         {
             "fields": (
                 "married",
@@ -22,7 +42,7 @@ fieldsets = [
         },
     ),
     (
-        "Part 2: Awareness and Concerns",
+        "Awareness and Concerns",
         {
             "fields": (
                 "perceived_threat",
@@ -35,12 +55,12 @@ fieldsets = [
         },
     ),
     (
-        "Part 3: Knowledge of Coronavirus",
+        "Knowledge of Coronavirus",
         {
             "description": mark_safe(
                 "<h5><font color='orange'>[Interviewer]:</font> For the questions in this section ask the "
-                "patient the following:</h5><h5><BR><B>What do you know about coronavirus / "
-                "Covid-19? Answer True, False or you don't know</B></h5>"
+                "patient the following:</h5><h5><BR><B>What do you know about coronavirus "
+                "Answer True, False or you don't know</B></h5>"
             ),
             "fields": (
                 "spread_droplets",
@@ -55,7 +75,7 @@ fieldsets = [
         },
     ),
     (
-        "Part 4: Symptoms of Coronavirus",
+        "Symptoms of Coronavirus",
         {
             "description": mark_safe(
                 "<h5><font color='orange'>[Interviewer]:</font> For the questions in this section ask the "
@@ -75,12 +95,12 @@ fieldsets = [
         },
     ),
     (
-        "Part 5: Protecting yourself",
+        "Protecting yourself",
         {
             "description": mark_safe(
                 "<h5><font color='orange'>[Interviewer]:</font> For the questions in this section ask the "
-                "patient the following:</h5><h5><BR><B>Do you think the following can protect you "
-                "against the Coronavirus? True, False or you don't know.</B></h5>"
+                "patient the following:</h5><h5><BR><B>Do you think the following can protect <u>you</u> "
+                "against the coronavirus? True, False or you don't know.</B></h5>"
             ),
             "fields": (
                 "hot_drinks",
@@ -95,7 +115,7 @@ fieldsets = [
         },
     ),
     (
-        "Part 6: Your response to symptoms",
+        "Your response to symptoms",
         {
             "description": mark_safe(
                 "<h5><font color='orange'>[Interviewer]:</font> For the questions in this section ask the "
@@ -128,7 +148,13 @@ class CoronaKapModelAdminMixin:
         "avoid_crowds": admin.VERTICAL,
         "call_nurse": admin.VERTICAL,
         "corona_concern": admin.VERTICAL,
-        # "dm_aware": admin.VERTICAL,
+        "hiv_pos": admin.VERTICAL,
+        "diabetic": admin.VERTICAL,
+        "diabetic_year": admin.VERTICAL,
+        "diabetic_on_meds": admin.VERTICAL,
+        "hypertensive": admin.VERTICAL,
+        "hypertensive_year": admin.VERTICAL,
+        "hypertensive_on_meds": admin.VERTICAL,
         "education": admin.VERTICAL,
         "employment_status": admin.VERTICAL,
         "face_masks": admin.VERTICAL,

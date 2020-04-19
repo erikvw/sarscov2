@@ -1,6 +1,11 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from edc_constants.choices import TRUE_FALSE_DONT_KNOW, YES_NO, YES_NO_DONT_KNOW
+from django.utils.safestring import mark_safe
+from edc_constants.choices import (
+    TRUE_FALSE_DONT_KNOW,
+    YES_NO,
+    YES_NO_UNKNOWN,
+)
 from edc_model import models as edc_models
 
 from ..choices import (
@@ -14,26 +19,81 @@ from ..choices import (
 )
 
 
-class CoronaKapModelMixin(models.Model):
+class CoronaKapDiseaseModelMixin(models.Model):
 
-    # PART1
-    # months_on_art = models.IntegerField(
-    #     verbose_name="How long has the patient been on antiretroviral therapy?",
-    #     help_text="months",
-    # )
-    # dm_aware = models.CharField(
-    #     verbose_name="Does the patient know if he/she has diabetes?",
-    #     max_length=25,
-    #     choices=YES_NO,
-    # )
-    #
-    # weight = edc_models.WeightField()
-    #
-    # height = edc_models.HeightField()
-    #
-    # sys_blood_pressure_r1 = edc_models.SystolicPressureField(null=True, blank=False)
-    #
-    # dia_blood_pressure_r1 = edc_models.DiastolicPressureField(null=True, blank=False)
+    # Disease burden
+    hiv_pos = models.CharField(
+        verbose_name=mark_safe("Does the patient have <u>HIV</u> infection?"),
+        max_length=25,
+        choices=YES_NO_UNKNOWN,
+    )
+
+    hiv_pos_year = models.IntegerField(
+        verbose_name=mark_safe("What year did you first test positive?"),
+        validators=[MinValueValidator(1950), MinValueValidator(2021)],
+    )
+
+    months_on_art = models.IntegerField(
+        verbose_name="If yes, for how many months you been on antiretroviral therapy?",
+        validators=[MinValueValidator(0)],
+        help_text="in months",
+        null=True,
+        blank=True,
+    )
+    diabetic = models.CharField(
+        verbose_name=mark_safe("Have you been diagnosed with <u>diabetes</u>?"),
+        max_length=25,
+        choices=YES_NO_UNKNOWN,
+    )
+
+    diabetic_year = models.IntegerField(
+        verbose_name=mark_safe(
+            "What year did you first learn you had <u>diabetes</u>?"
+        ),
+        validators=[MinValueValidator(1950), MinValueValidator(2021)],
+    )
+
+    diabetic_on_meds = models.CharField(
+        verbose_name=mark_safe(
+            "Are you taking medications to control your <u>diabetes</u>?"
+        ),
+        max_length=25,
+        choices=YES_NO_UNKNOWN,
+    )
+
+    hypertensive = models.CharField(
+        verbose_name=mark_safe("Have you been diagnosed with <u>hypertension</u>?"),
+        max_length=25,
+        choices=YES_NO_UNKNOWN,
+    )
+
+    hypertensive_year = models.IntegerField(
+        verbose_name=mark_safe(
+            "What year did you first learn you had <u>hypertension</u>?"
+        ),
+        validators=[MinValueValidator(1950), MinValueValidator(2021)],
+    )
+    hypertensive_on_meds = models.CharField(
+        verbose_name=mark_safe(
+            "Are you taking medications to control your <u>hypertension</u>?"
+        ),
+        max_length=25,
+        choices=YES_NO_UNKNOWN,
+    )
+
+    weight = edc_models.WeightField(null=True, blank=True)
+
+    height = edc_models.HeightField(null=True, blank=True)
+
+    sys_blood_pressure = edc_models.SystolicPressureField(null=True, blank=True)
+
+    dia_blood_pressure = edc_models.DiastolicPressureField(null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class CoronaKapModelMixin(models.Model):
 
     # PART2
     married = models.CharField(
@@ -41,7 +101,7 @@ class CoronaKapModelMixin(models.Model):
     )
 
     employment_status = models.CharField(
-        verbose_name="Are you employed", max_length=25, choices=EMPLOYMENT_STATUS,
+        verbose_name="Are you employed?", max_length=25, choices=EMPLOYMENT_STATUS,
     )
 
     shared_housing_one = models.IntegerField(
@@ -50,23 +110,29 @@ class CoronaKapModelMixin(models.Model):
 
     shared_housing_two = models.IntegerField(
         verbose_name=(
-            "In a typically month, how many different people "
-            "spend more than one night at your current dwelling"
+            "In a typical month, how many different people "
+            "spend more than one night at your current dwelling?"
         ),
     )
 
     employment = models.CharField(
-        verbose_name="Employment", max_length=25, choices=PROFESSIONS,
+        verbose_name="What type of employment are you involved in?",
+        max_length=25,
+        choices=PROFESSIONS,
     )
 
     employment_other = edc_models.OtherCharField(null=True, blank=True)
 
     education = models.CharField(
-        verbose_name="Education level", max_length=25, choices=EMPLOYMENT_LEVELS,
+        verbose_name="What is your highest completed education level?",
+        max_length=25,
+        choices=EMPLOYMENT_LEVELS,
     )
 
     health_insurance = models.CharField(
-        verbose_name="Health Insurance", max_length=25, choices=HEALTH_INSURANCE,
+        verbose_name="How are you covered for your health care expenses?",
+        max_length=25,
+        choices=HEALTH_INSURANCE,
     )
 
     health_insurance_other = edc_models.OtherCharField(null=True, blank=True)
@@ -79,7 +145,10 @@ class CoronaKapModelMixin(models.Model):
 
     # PART3
     perceived_threat = models.IntegerField(
-        verbose_name="On a scale from 1-10, how serious of a public health threat is coronavirus",
+        verbose_name=(
+            "On a scale from 1-10, how serious of a public "
+            "health threat is coronavirus?"
+        ),
         validators=[MinValueValidator(1), MaxValueValidator(10)],
         help_text="On a scale from 1-10",
     )
@@ -91,30 +160,36 @@ class CoronaKapModelMixin(models.Model):
     )
 
     personal_infection_likelihood = models.CharField(
-        verbose_name="How likely do you think it is that you will get corona virus",
+        verbose_name=(
+            "How likely do you think it is that <u>you</u> "
+            "will get sick from coronavirus?"
+        ),
         max_length=25,
         choices=LIKELIHOOD_SCALE,
     )
 
     family_infection_likelihood = models.CharField(
         verbose_name=(
-            "How likely do you think it is that you or someone in your family "
-            "will get sick from the coronavirus"
+            "How likely do you think it is that <u>someone in your family</u> "
+            "will get sick from coronavirus?"
         ),
         max_length=25,
         choices=LIKELIHOOD_SCALE,
     )
 
     perc_die = models.IntegerField(
-        verbose_name="What percentage of people who get coronavirus do you think will die",
+        verbose_name=(
+            "Out of every 100 people who get infected with "
+            "coronavirus, how many do you think <u>will die</u>?"
+        ),
         validators=[MinValueValidator(0), MaxValueValidator(100)],
         help_text="On a scale from 0-100",
     )
 
     perc_mild_symptom = models.IntegerField(
         verbose_name=(
-            "What percentage of people who get coronavirus "
-            "do you think will have only mild symptoms"
+            "Out of every 100 people who get infected with coronavirus, "
+            "how many do you think <u>will have only mild symptoms</u>?"
         ),
         validators=[MinValueValidator(0), MaxValueValidator(100)],
         help_text="On a scale from 0-100",
@@ -123,7 +198,7 @@ class CoronaKapModelMixin(models.Model):
     # PART 4
     spread_droplets = models.CharField(
         verbose_name=(
-            "The virus spreads by droplets from cough and sneezes "
+            "Coronavirus spreads by droplets from cough and sneezes "
             "from people infected with coronavirus"
         ),
         max_length=25,
@@ -131,38 +206,56 @@ class CoronaKapModelMixin(models.Model):
     )
 
     spread_touch = models.CharField(
-        verbose_name="The virus can spread by people touching each other",
+        verbose_name="Coronavirus can spread by people touching each other",
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
     spread_sick = models.CharField(
-        verbose_name="People transmit the virus when they are sick ",
+        verbose_name="People can transmit coronavirus when they are sick ",
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
     spread_asymptomatic = models.CharField(
-        verbose_name="People can transmit the virus even when they do not appear to be sick",
+        verbose_name=(
+            "People can transmit coronavirus even when they do not appear to be sick"
+        ),
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
     severity_age = models.CharField(
-        verbose_name="The disease is more severe in older people than children",
+        verbose_name="Coronavirus is more severe in older people than children",
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
+
+    severity_hiv = models.CharField(
+        verbose_name="Coronavirus is more severe in people with <u>HIV infection</u>",
+        max_length=25,
+        choices=TRUE_FALSE_DONT_KNOW,
+    )
+
+    severity_diabetes_hypertension = models.CharField(
+        verbose_name=(
+            "Coronavirus is more severe "
+            "in people with <u>diabetes</u> and/or <u>hypertension</u>"
+        ),
+        max_length=25,
+        choices=TRUE_FALSE_DONT_KNOW,
+    )
+
     hot_climate = models.CharField(
-        verbose_name="The virus does not survive in the hot climate",
+        verbose_name="Coronavirus does not survive in the hot climate",
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
     lives_on_materials = models.CharField(
-        verbose_name="The virus can live on clothes, plastics, cardboard for a day or more",
+        verbose_name="Coronavirus can live on clothes, plastics, cardboard for a day or more",
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
     spread_touch2 = models.CharField(
         verbose_name=(
-            "You can catch the virus if you touch an infected "
+            "You can catch coronavirus if you touch an infected "
             "area and then touch your face or eyes"
         ),
         max_length=25,
@@ -200,15 +293,12 @@ class CoronaKapModelMixin(models.Model):
     )
 
     know_other_symptoms = models.CharField(
-        verbose_name="Do you know of any other symptoms of a Coronavirus?",
+        verbose_name="Do you know of any other symptoms of coronavirus?",
         max_length=25,
         choices=YES_NO,
     )
     symptoms_other = models.TextField(
-        verbose_name=(
-            "Please list any other symptoms of a Corona virus "
-            "infection that you are aware of"
-        ),
+        verbose_name="Please list any other symptoms of coronavirus that you are aware of:",
         max_length=250,
         null=True,
         blank=True,
@@ -228,7 +318,7 @@ class CoronaKapModelMixin(models.Model):
     )
 
     wash_hands = models.CharField(
-        verbose_name="Wash hands with soap and warm water virus",
+        verbose_name="Wash hands with soap and warm water",
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
@@ -276,9 +366,10 @@ class CoronaKapModelMixin(models.Model):
         choices=LIKELIHOOD_SCALE,
     )
     stop_chronic_meds = models.CharField(
-        verbose_name="Stop taking my chronic disease medicines",
+        verbose_name="Stop taking your chronic disease medicines",
         max_length=25,
         choices=LIKELIHOOD_SCALE,
+        help_text="For example, medicines for diabetes, hypertension and/or HIV",
     )
 
     visit_religious = models.CharField(

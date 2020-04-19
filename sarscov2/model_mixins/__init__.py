@@ -1,1 +1,1 @@
-from .corona_kap_model_mixin import CoronaKapModelMixin
+from .corona_kap_model_mixin import CoronaKapModelMixin, CoronaKapDiseaseModelMixin
