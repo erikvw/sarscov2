@@ -4,6 +4,7 @@ from django.utils.safestring import mark_safe
 from edc_constants.choices import (
     TRUE_FALSE_DONT_KNOW,
     YES_NO,
+    YES_NO_NA,
     YES_NO_UNKNOWN,
 )
 from edc_model import models as edc_models
@@ -30,7 +31,9 @@ class CoronaKapDiseaseModelMixin(models.Model):
 
     hiv_pos_year = models.IntegerField(
         verbose_name=mark_safe("What year did you first test positive?"),
-        validators=[MinValueValidator(1950), MinValueValidator(2021)],
+        validators=[MinValueValidator(1950), MinValueValidator(2020)],
+        null=True,
+        blank=True,
     )
 
     months_on_art = models.IntegerField(
@@ -50,7 +53,9 @@ class CoronaKapDiseaseModelMixin(models.Model):
         verbose_name=mark_safe(
             "What year did you first learn you had <u>diabetes</u>?"
         ),
-        validators=[MinValueValidator(1950), MinValueValidator(2021)],
+        validators=[MinValueValidator(1950), MinValueValidator(2020)],
+        null=True,
+        blank=True,
     )
 
     diabetic_on_meds = models.CharField(
@@ -58,7 +63,7 @@ class CoronaKapDiseaseModelMixin(models.Model):
             "Are you taking medications to control your <u>diabetes</u>?"
         ),
         max_length=25,
-        choices=YES_NO_UNKNOWN,
+        choices=YES_NO_NA,
     )
 
     hypertensive = models.CharField(
@@ -71,14 +76,16 @@ class CoronaKapDiseaseModelMixin(models.Model):
         verbose_name=mark_safe(
             "What year did you first learn you had <u>hypertension</u>?"
         ),
-        validators=[MinValueValidator(1950), MinValueValidator(2021)],
+        validators=[MinValueValidator(1950), MinValueValidator(2020)],
+        null=True,
+        blank=True,
     )
     hypertensive_on_meds = models.CharField(
         verbose_name=mark_safe(
             "Are you taking medications to control your <u>hypertension</u>?"
         ),
         max_length=25,
-        choices=YES_NO_UNKNOWN,
+        choices=YES_NO_NA,
     )
 
     weight = edc_models.WeightField(null=True, blank=True)
