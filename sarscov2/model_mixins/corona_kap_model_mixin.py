@@ -31,7 +31,7 @@ class CoronaKapDiseaseModelMixin(models.Model):
 
     hiv_pos_year = models.IntegerField(
         verbose_name=mark_safe("If 'Yes', what year did you first test positive?"),
-        validators=[MinValueValidator(1950), MinValueValidator(2020)],
+        validators=[MinValueValidator(1950), MaxValueValidator(2020)],
         null=True,
         blank=True,
         help_text="format YYYY",
@@ -54,7 +54,7 @@ class CoronaKapDiseaseModelMixin(models.Model):
         verbose_name=mark_safe(
             "If 'Yes', what year did you first learn you had <u>diabetes</u>?"
         ),
-        validators=[MinValueValidator(1950), MinValueValidator(2020)],
+        validators=[MinValueValidator(1950), MaxValueValidator(2020)],
         null=True,
         blank=True,
         help_text="format YYYY",
@@ -78,7 +78,7 @@ class CoronaKapDiseaseModelMixin(models.Model):
         verbose_name=mark_safe(
             "If 'Yes', what year did you first learn you had <u>hypertension</u>?"
         ),
-        validators=[MinValueValidator(1950), MinValueValidator(2020)],
+        validators=[MinValueValidator(1950), MaxValueValidator(2020)],
         null=True,
         blank=True,
         help_text="format YYYY",
@@ -116,14 +116,19 @@ class CoronaKapModelMixin(models.Model):
     )
 
     shared_housing_one = models.IntegerField(
-        verbose_name="How many people live together in your dwelling?",
+        verbose_name="How many people live together in your home / dwelling?",
+        help_text=(
+            "Family / people who typically spend more "
+            "than 14 nights per month in your home."
+        ),
     )
 
     shared_housing_two = models.IntegerField(
         verbose_name=(
-            "In a typical month, how many different people "
-            "spend more than one night at your current dwelling?"
+            "In a typical month, how many <u>additional people</u> "
+            "spend more than one night in your home / dwelling?"
         ),
+        help_text="Visitors, friends, relatives, etc",
     )
 
     employment = models.CharField(
