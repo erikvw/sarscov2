@@ -10,12 +10,12 @@ fieldsets = [
             "fields": (
                 "hiv_pos",
                 "hiv_pos_year",
-                "months_on_art",
+                "hiv_year_started_art",
                 "diabetic",
-                "diabetic_year",
+                "diabetic_dx_year",
                 "diabetic_on_meds",
                 "hypertensive",
-                "hypertensive_year",
+                "hypertensive_dx_year",
                 "hypertensive_on_meds",
             )
         },
