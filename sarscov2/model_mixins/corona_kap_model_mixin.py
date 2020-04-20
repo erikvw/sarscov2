@@ -30,14 +30,21 @@ class CoronaKapDiseaseModelMixin(models.Model):
     )
 
     hiv_pos_year = models.IntegerField(
-        verbose_name=mark_safe("What year did you first test positive?"),
+        verbose_name=mark_safe("What year did you <u>first test positive</u>?"),
         validators=[MinValueValidator(1950), MinValueValidator(2020)],
         null=True,
         blank=True,
     )
 
-    months_on_art = models.IntegerField(
-        verbose_name="If yes, for how many months you been on antiretroviral therapy?",
+    hiv_pos_year = models.IntegerField(
+        verbose_name=mark_safe("If Yes, what year did you first test positive?"),
+        validators=[MinValueValidator(1950), MinValueValidator(2020)],
+        null=True,
+        blank=True,
+    )
+
+    hiv_year_started_art = models.IntegerField(
+        verbose_name="If Yes, what year did you did you <u>start antiretroviral therapy</u>?",
         validators=[MinValueValidator(0)],
         help_text="in months",
         null=True,
@@ -49,9 +56,9 @@ class CoronaKapDiseaseModelMixin(models.Model):
         choices=YES_NO_UNKNOWN,
     )
 
-    diabetic_year = models.IntegerField(
+    diabetic_dx_year = models.IntegerField(
         verbose_name=mark_safe(
-            "What year did you first learn you had <u>diabetes</u>?"
+            "If Yes, what year did you first learn you had <u>diabetes</u>?"
         ),
         validators=[MinValueValidator(1950), MinValueValidator(2020)],
         null=True,
@@ -60,7 +67,7 @@ class CoronaKapDiseaseModelMixin(models.Model):
 
     diabetic_on_meds = models.CharField(
         verbose_name=mark_safe(
-            "Are you taking medications to control your <u>diabetes</u>?"
+            "If Yes, are you taking medications to control your <u>diabetes</u>?"
         ),
         max_length=25,
         choices=YES_NO_NA,
@@ -72,9 +79,9 @@ class CoronaKapDiseaseModelMixin(models.Model):
         choices=YES_NO_UNKNOWN,
     )
 
-    hypertensive_year = models.IntegerField(
+    hypertensive_dx_year = models.IntegerField(
         verbose_name=mark_safe(
-            "What year did you first learn you had <u>hypertension</u>?"
+            "If Yes, what year did you first learn you had <u>hypertension</u>?"
         ),
         validators=[MinValueValidator(1950), MinValueValidator(2020)],
         null=True,
@@ -82,7 +89,7 @@ class CoronaKapDiseaseModelMixin(models.Model):
     )
     hypertensive_on_meds = models.CharField(
         verbose_name=mark_safe(
-            "Are you taking medications to control your <u>hypertension</u>?"
+            "If Yes, are you taking medications to control your <u>hypertension</u>?"
         ),
         max_length=25,
         choices=YES_NO_NA,
