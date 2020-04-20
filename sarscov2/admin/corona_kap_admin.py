@@ -5,20 +5,16 @@ from django.utils.safestring import mark_safe
 fieldsets = [
     (None, {"fields": ("subject_visit", "report_datetime")}),
     (
-        "Disease Burden",
-        {
-            "fields": (
-                "hiv_pos",
-                "hiv_pos_year",
-                "hiv_year_started_art",
-                "diabetic",
-                "diabetic_dx_year",
-                "diabetic_on_meds",
-                "hypertensive",
-                "hypertensive_dx_year",
-                "hypertensive_on_meds",
-            )
-        },
+        "Disease Burden: HIV",
+        {"fields": ("hiv_pos", "hiv_pos_year", "hiv_year_started_art",)},
+    ),
+    (
+        "Disease Burden: Diabetes",
+        {"fields": ("diabetic", "diabetic_dx_year", "diabetic_on_meds",)},
+    ),
+    (
+        "Disease Burden: Hypertension",
+        {"fields": ("hypertensive", "hypertensive_dx_year", "hypertensive_on_meds",)},
     ),
     (
         "Indicators",
