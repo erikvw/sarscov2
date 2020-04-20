@@ -1,6 +1,10 @@
 Changes
 =======
 
+0.1.5
+-----
+- minor model prompt / help_text changes
+
 0.1.3
 -----
 - change from months on ART to aski the year started
