@@ -1,6 +1,12 @@
 Changes
 =======
 
+0.1.3
+-----
+- change from months on ART to aski the year started
+- add year diagnosed with diabetes, hypertension
+- update admin and form validator
+
 0.1.1
 -----
 - re-word economics questions on employment, health insurance, education (Okebe)
