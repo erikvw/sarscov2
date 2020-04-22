@@ -10,7 +10,7 @@ from edc_constants.choices import (
 from edc_model import models as edc_models
 
 from ..choices import (
-    EMPLOYMENT_LEVELS,
+    EDUCATION_LEVELS,
     EMPLOYMENT_STATUS,
     HEALTH_INSURANCE,
     HEALTH_OPINION,
@@ -44,6 +44,16 @@ class CoronaKapDiseaseModelMixin(models.Model):
         blank=True,
         help_text="format YYYY",
     )
+
+    hiv_missed_doses = models.IntegerField(
+        verbose_name=mark_safe(
+            "If 'Yes', in the last month <u>how many days</u> did you miss "
+            "taking your <u>ART</u> medications?"
+        ),
+        null=True,
+        blank=True,
+    )
+
     diabetic = models.CharField(
         verbose_name=mark_safe("Have you been diagnosed with <u>diabetes</u>?"),
         max_length=25,
@@ -66,6 +76,15 @@ class CoronaKapDiseaseModelMixin(models.Model):
         ),
         max_length=25,
         choices=YES_NO_NA,
+    )
+
+    diabetic_missed_doses = models.IntegerField(
+        verbose_name=mark_safe(
+            "If 'Yes', in the last month <u>how many days</u> did you miss "
+            "taking your <u>diabetes</u> medications?"
+        ),
+        null=True,
+        blank=True,
     )
 
     hypertensive = models.CharField(
@@ -92,6 +111,15 @@ class CoronaKapDiseaseModelMixin(models.Model):
         choices=YES_NO_NA,
     )
 
+    hypertensive_missed_doses = models.IntegerField(
+        verbose_name=mark_safe(
+            "If 'Yes', in the last month <u>how many days</u> did you miss "
+            "taking your <u>hypertension</u> medications?"
+        ),
+        null=True,
+        blank=True,
+    )
+
     weight = edc_models.WeightField(null=True, blank=True)
 
     height = edc_models.HeightField(null=True, blank=True)
@@ -115,20 +143,19 @@ class CoronaKapModelMixin(models.Model):
         verbose_name="Are you employed?", max_length=25, choices=EMPLOYMENT_STATUS,
     )
 
-    shared_housing_one = models.IntegerField(
+    household_size = models.IntegerField(
         verbose_name="How many people live together in your home / dwelling?",
         help_text=(
-            "Family / people who typically spend more "
-            "than 14 nights per month in your home."
+            "Family / people who spend more than 14 nights per month in your home."
         ),
     )
 
-    shared_housing_two = models.IntegerField(
+    nights_away = models.IntegerField(
         verbose_name=(
-            "In a typical month, how many <u>additional people</u> "
-            "spend more than one night in your home / dwelling?"
+            "In the last one month, how many nights did you spend "
+            "away from your home / dwelling?"
         ),
-        help_text="Visitors, friends, relatives, etc",
+        help_text="e.g. travelling for work, staying with family",
     )
 
     employment = models.CharField(
@@ -142,7 +169,7 @@ class CoronaKapModelMixin(models.Model):
     education = models.CharField(
         verbose_name="What is your highest completed education level?",
         max_length=25,
-        choices=EMPLOYMENT_LEVELS,
+        choices=EDUCATION_LEVELS,
     )
 
     health_insurance = models.CharField(

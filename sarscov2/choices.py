@@ -14,7 +14,7 @@ PROFESSIONS = (
     (OTHER, "Other, specify below"),
 )
 
-EMPLOYMENT_LEVELS = (
+EDUCATION_LEVELS = (
     ("primary", "Up to primary"),
     ("secondary", "Up to high school"),
     ("tertiary", "University, college"),
