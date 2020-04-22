@@ -1,6 +1,10 @@
 Changes
 =======
 
+0.1.7
+-----
+- add additional question on drug supply
+
 0.1.5
 -----
 - minor model prompt / help_text changes
@@ -13,8 +17,8 @@ Changes
 
 0.1.1
 -----
-- re-word economics questions on employment, health insurance, education (Okebe)
-- fix logic error for question of other sysptoms you know (Okebe)
+- re-word economics questions on employment, health insurance, education
+- fix logic error for question of other sysptoms you know
 - remove precentage and change both questions to "Out of every 100 people, ..."
 - add questions about HIV, ART, diabetes and hypertension status
 - add indicator questions (weight, height, blood sugar)

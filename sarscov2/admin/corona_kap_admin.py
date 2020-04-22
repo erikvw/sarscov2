@@ -6,15 +6,36 @@ fieldsets = [
     (None, {"fields": ("subject_visit", "report_datetime")}),
     (
         "Disease Burden: HIV",
-        {"fields": ("hiv_pos", "hiv_pos_year", "hiv_year_started_art",)},
+        {
+            "fields": (
+                "hiv_pos",
+                "hiv_pos_year",
+                "hiv_year_started_art",
+                "hiv_missed_doses",
+            )
+        },
     ),
     (
         "Disease Burden: Diabetes",
-        {"fields": ("diabetic", "diabetic_dx_year", "diabetic_on_meds",)},
+        {
+            "fields": (
+                "diabetic",
+                "diabetic_dx_year",
+                "diabetic_on_meds",
+                "diabetic_missed_doses",
+            )
+        },
     ),
     (
         "Disease Burden: Hypertension",
-        {"fields": ("hypertensive", "hypertensive_dx_year", "hypertensive_on_meds",)},
+        {
+            "fields": (
+                "hypertensive",
+                "hypertensive_dx_year",
+                "hypertensive_on_meds",
+                "hypertensive_missed_doses",
+            )
+        },
     ),
     (
         "Indicators",
@@ -29,8 +50,8 @@ fieldsets = [
                 "employment",
                 "employment_other",
                 "education",
-                "shared_housing_one",
-                "shared_housing_two",
+                "household_size",
+                "nights_away",
                 "health_insurance",
                 "health_insurance_other",
                 "personal_health_opinion",
