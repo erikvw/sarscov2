@@ -1,5 +1,7 @@
 import os
 
+from edc_constants.constants import COMPLETE
+from multisite import SiteID
 
 APP_NAME = "sarscov2"
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -28,10 +30,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "django_crypto_fields.apps.AppConfig",
-    "edc_action_item.apps.AppConfig",
+    "import_export",
+    "multisite",
+    "simple_history",
+    "edc_crf.apps.AppConfig",
     "edc_dashboard.apps.AppConfig",
+    "edc_model_admin.apps.AppConfig",
     "edc_sites.apps.AppConfig",
-    "edc_notification.apps.AppConfig",
     "edc_registration.apps.AppConfig",
     "sarscov2.apps.AppConfig",
 ]
@@ -40,6 +45,8 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "multisite.middleware.DynamicSiteMiddleware",
+    "django.contrib.sites.middleware.CurrentSiteMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -111,9 +118,14 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-SUBJECT_VISIT_MODEL = "sarscov2.subjectvisit"
+# SUBJECT_VISIT_MODEL = "sarscov2.subjectvisit"
 EMAIL_CONTACTS = {}
 ADVERSE_EVENT_APP_LABEL = ""
 SUBJECT_REQUISITION_MODEL = ""
 SUBJECT_CONSENT_MODEL = ""
 EDC_BOOTSTRAP = ""
+KEY_PATH = os.path.join(BASE_DIR, "sarscov2", "tests", "etc", "crypto_fields")
+ETC_DIR = BASE_DIR
+AUTO_CREATE_KEYS = False
+SITE_ID = SiteID(default=1)
+CRF_STATUS_DEFAULT = COMPLETE

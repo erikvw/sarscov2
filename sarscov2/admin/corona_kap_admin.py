@@ -1,208 +1,58 @@
-from django_audit_fields.admin import audit_fieldset_tuple
+from copy import copy
+
 from django.contrib import admin
-from django.utils.safestring import mark_safe
+from django_audit_fields import ModelAdminAuditFieldsMixin
+from django_revision.modeladmin_mixin import ModelAdminRevisionMixin
+from edc_form_label import FormLabelModelAdminMixin
+from edc_model_admin import (
+    ModelAdminFormAutoNumberMixin,
+    ModelAdminFormInstructionsMixin,
+    ModelAdminInstitutionMixin,
+    SimpleHistoryAdmin,
+    TemplatesModelAdminMixin,
+)
+from edc_model_admin.base_model_admin_redirect_mixin import BaseModelAdminRedirectMixin
 
-fieldsets = [
-    (None, {"fields": ("subject_visit", "report_datetime")}),
-    (
-        "Disease Burden: HIV",
-        {
-            "fields": (
-                "hiv_pos",
-                "hiv_pos_year",
-                "hiv_year_started_art",
-                "hiv_missed_doses",
-            )
-        },
-    ),
-    (
-        "Disease Burden: Diabetes",
-        {
-            "fields": (
-                "diabetic",
-                "diabetic_dx_year",
-                "diabetic_on_meds",
-                "diabetic_missed_doses",
-            )
-        },
-    ),
-    (
-        "Disease Burden: Hypertension",
-        {
-            "fields": (
-                "hypertensive",
-                "hypertensive_dx_year",
-                "hypertensive_on_meds",
-                "hypertensive_missed_doses",
-            )
-        },
-    ),
-    (
-        "Indicators",
-        {"fields": ("weight", "height", "sys_blood_pressure", "dia_blood_pressure",)},
-    ),
-    (
-        "Economics",
-        {
-            "fields": (
-                "married",
-                "employment_status",
-                "employment",
-                "employment_other",
-                "education",
-                "household_size",
-                "nights_away",
-                "health_insurance",
-                "health_insurance_other",
-                "personal_health_opinion",
-            )
-        },
-    ),
-    (
-        "Awareness and Concerns",
-        {
-            "fields": (
-                "perceived_threat",
-                "corona_concern",
-                "personal_infection_likelihood",
-                "family_infection_likelihood",
-                "perc_die",
-                "perc_mild_symptom",
-            )
-        },
-    ),
-    (
-        "Knowledge of Coronavirus",
-        {
-            "description": mark_safe(
-                "<h5><font color='orange'>[Interviewer]:</font> For the questions in this section ask the "
-                "patient the following:</h5><h5><BR><B>What do you know about coronavirus "
-                "Answer True, False or you don't know</B></h5>"
-            ),
-            "fields": (
-                "spread_droplets",
-                "spread_touch",
-                "spread_sick",
-                "spread_asymptomatic",
-                "severity_age",
-                "hot_climate",
-                "lives_on_materials",
-                "spread_touch2",
-            ),
-        },
-    ),
-    (
-        "Symptoms of Coronavirus",
-        {
-            "description": mark_safe(
-                "<h5><font color='orange'>[Interviewer]:</font> For the questions in this section ask the "
-                "patient the following:</h5><h5><BR><B>Do you think any of the following symptoms are "
-                "linked with coronavirus infection? Answer True, False or you don't know</B></h5>"
-            ),
-            "fields": (
-                "symptoms_fever",
-                "symptoms_headache",
-                "symptoms_dry_cough",
-                "symptoms_body_aches",
-                "symptoms_smell",
-                "symptoms_breathing",
-                "know_other_symptoms",
-                "symptoms_other",
-            ),
-        },
-    ),
-    (
-        "Protecting yourself",
-        {
-            "description": mark_safe(
-                "<h5><font color='orange'>[Interviewer]:</font> For the questions in this section ask the "
-                "patient the following:</h5><h5><BR><B>Do you think the following can protect <u>you</u> "
-                "against the coronavirus? True, False or you don't know.</B></h5>"
-            ),
-            "fields": (
-                "hot_drinks",
-                "alcohol",
-                "wash_hands",
-                "hand_sanitizer",
-                "avoid_crowds",
-                "face_masks",
-                "stay_indoors",
-                "social_distance",
-            ),
-        },
-    ),
-    (
-        "Your response to symptoms",
-        {
-            "description": mark_safe(
-                "<h5><font color='orange'>[Interviewer]:</font> For the questions in this section ask the "
-                "patient the following:</h5><h5><BR><B>If you had symptoms "
-                "of coronavirus, how likely are you to do any of the following?</B></h5>"
-            ),
-            "fields": (
-                "stay_home",
-                "visit_clinic",
-                "call_nurse",
-                "take_meds",
-                "stop_chronic_meds",
-                "visit_religious",
-                "visit_traditional",
-            ),
-        },
-    ),
-    audit_fieldset_tuple,
-]
+from django.urls import reverse
+from import_export.admin import ExportActionMixin
+from django_audit_fields import AUDIT_MODEL_FIELDS
+
+from ..admin_site import sarscov2_admin
+from ..forms import CoronaKapForm
+from ..models import CoronaKap
+from .modeladmin_mixin import CoronaKapModelAdminMixin
+
+audit_fields = copy(AUDIT_MODEL_FIELDS)
+audit_fields.remove("id")
 
 
-class CoronaKapModelAdminMixin:
+@admin.register(CoronaKap, site=sarscov2_admin)
+class CoronaKapAdmin(
+    ExportActionMixin,
+    TemplatesModelAdminMixin,
+    ModelAdminFormInstructionsMixin,
+    ModelAdminFormAutoNumberMixin,
+    ModelAdminRevisionMixin,
+    ModelAdminAuditFieldsMixin,
+    ModelAdminInstitutionMixin,
+    CoronaKapModelAdminMixin,
+    FormLabelModelAdminMixin,
+    BaseModelAdminRedirectMixin,
+    SimpleHistoryAdmin,
+):
+    form = CoronaKapForm
 
-    fieldsets = fieldsets
+    show_object_tools = True
 
-    filter_horizaontal = ("information_sources",)
+    redirect_url_name = None  # "sarscov2_admin:index"
 
-    radio_fields = {
-        "alcohol": admin.VERTICAL,
-        "avoid_crowds": admin.VERTICAL,
-        "call_nurse": admin.VERTICAL,
-        "corona_concern": admin.VERTICAL,
-        "hiv_pos": admin.VERTICAL,
-        "diabetic": admin.VERTICAL,
-        "diabetic_on_meds": admin.VERTICAL,
-        "hypertensive": admin.VERTICAL,
-        "hypertensive_on_meds": admin.VERTICAL,
-        "education": admin.VERTICAL,
-        "employment_status": admin.VERTICAL,
-        "face_masks": admin.VERTICAL,
-        "family_infection_likelihood": admin.VERTICAL,
-        "hand_sanitizer": admin.VERTICAL,
-        "health_insurance": admin.VERTICAL,
-        "hot_climate": admin.VERTICAL,
-        "hot_drinks": admin.VERTICAL,
-        "know_other_symptoms": admin.VERTICAL,
-        "lives_on_materials": admin.VERTICAL,
-        "married": admin.VERTICAL,
-        "personal_health_opinion": admin.VERTICAL,
-        "personal_infection_likelihood": admin.VERTICAL,
-        "employment": admin.VERTICAL,
-        "severity_age": admin.VERTICAL,
-        "social_distance": admin.VERTICAL,
-        "spread_asymptomatic": admin.VERTICAL,
-        "spread_droplets": admin.VERTICAL,
-        "spread_sick": admin.VERTICAL,
-        "spread_touch": admin.VERTICAL,
-        "spread_touch2": admin.VERTICAL,
-        "stay_home": admin.VERTICAL,
-        "stay_indoors": admin.VERTICAL,
-        "stop_chronic_meds": admin.VERTICAL,
-        "symptoms_body_aches": admin.VERTICAL,
-        "symptoms_breathing": admin.VERTICAL,
-        "symptoms_dry_cough": admin.VERTICAL,
-        "symptoms_fever": admin.VERTICAL,
-        "symptoms_headache": admin.VERTICAL,
-        "symptoms_smell": admin.VERTICAL,
-        "take_meds": admin.VERTICAL,
-        "visit_clinic": admin.VERTICAL,
-        "visit_religious": admin.VERTICAL,
-        "visit_traditional": admin.VERTICAL,
-        "wash_hands": admin.VERTICAL,
-    }
+    list_filter = ("crf_status", "report_datetime", *audit_fields)
+
+    # add_form_template = "admin/change_form.html"
+    # change_form_template = "admin/change_form.html"
+    # change_list_template = "admin/change_list.html"
+
+    def redirect_url(self, request, obj, post_url_continue=None):
+        if self.redirect_url_name:
+            return reverse(self.redirect_url_name)
+        return None

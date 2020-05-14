@@ -1,1 +1,2 @@
+from .conorna_kap_form import CoronaKapForm
 from .coronavirus_kap_form_validator import CoronaKapFormValidator
