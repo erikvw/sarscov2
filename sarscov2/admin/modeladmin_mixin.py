@@ -223,8 +223,7 @@ class CoronaKapModelAdminMixin:
     }
 
     list_display = (
-        "screening_identifier",
-        "subject_identifier",
+        "human_screening_identifier",
         "site",
         "report_datetime",
         "protocol",
@@ -236,3 +235,8 @@ class CoronaKapModelAdminMixin:
         "screening_identifier",
         "subject_identifier",
     ]
+
+    def human_screening_identifier(self, obj):
+        return f"{obj.screening_identifier[0:4]}-{obj.screening_identifier[4:]}"
+
+    human_screening_identifier.short_description = "screening identifier"

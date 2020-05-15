@@ -19,7 +19,7 @@ class CoronaKapManager(models.Manager):
         return self.get(screening_identifier=screening_identifier)
 
 
-class CoronaKap(
+class CoronavirusKap(
     CoronaKapDiseaseModelMixin,
     CoronaKapModelMixin,
     CrfStatusModelMixin,

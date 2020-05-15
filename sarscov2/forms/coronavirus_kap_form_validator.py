@@ -59,13 +59,21 @@ class CoronaKapFormValidator(FormValidator):
             YES, field="know_other_symptoms", field_required="symptoms_other"
         )
 
+    @property
+    def unformatted_screening_identifier(self):
+        return (
+            self.cleaned_data.get("screening_identifier")
+            .replace("-", "")
+            .replace(" ", "")
+        )
+
     def validate_identifier(self):
         subject_screening_model = getattr(settings, "SUBJECT_SCREENING_MODEL", None)
         if subject_screening_model and self.cleaned_data.get("screening_identifier"):
             model_cls = django_apps.get_model(subject_screening_model)
             try:
                 model_cls.objects.get(
-                    screening_identifier=self.cleaned_data.get("screening_identifier")
+                    screening_identifier=self.unformatted_screening_identifier
                 )
             except ObjectDoesNotExist:
                 raise forms.ValidationError(

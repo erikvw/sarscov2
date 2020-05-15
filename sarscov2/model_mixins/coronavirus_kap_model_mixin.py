@@ -7,6 +7,7 @@ from edc_constants.choices import (
     YES_NO_NA,
     YES_NO_UNKNOWN,
 )
+from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
 
 from ..choices import (
@@ -77,6 +78,7 @@ class CoronaKapDiseaseModelMixin(models.Model):
         ),
         max_length=25,
         choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
     )
 
     diabetic_missed_doses = models.IntegerField(
@@ -110,6 +112,7 @@ class CoronaKapDiseaseModelMixin(models.Model):
         ),
         max_length=25,
         choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
     )
 
     hypertensive_missed_doses = models.IntegerField(
@@ -150,6 +153,7 @@ class CoronaKapModelMixin(models.Model):
         verbose_name="What type of <u>paid</u> work / employment are you involved in?",
         max_length=25,
         choices=EMPLOYMENT,
+        default=NOT_APPLICABLE,
     )
 
     employment_other = edc_models.OtherCharField(null=True, blank=True)
@@ -158,6 +162,7 @@ class CoronaKapModelMixin(models.Model):
         verbose_name="What type of <u>unpaid</u> work are you involved in?",
         max_length=25,
         choices=UNPAID_WORK,
+        default=NOT_APPLICABLE,
     )
 
     unpaid_work_other = edc_models.OtherCharField(null=True, blank=True)

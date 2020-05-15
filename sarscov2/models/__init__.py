@@ -1,2 +1,1 @@
-from .corona_kap import CoronaKap
-from .list_models import CoronaKapInformationSources
+from .coronavirus_kap import CoronavirusKap
