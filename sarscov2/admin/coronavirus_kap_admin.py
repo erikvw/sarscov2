@@ -11,6 +11,7 @@ from edc_model_admin import (
     ModelAdminFormAutoNumberMixin,
     ModelAdminFormInstructionsMixin,
     ModelAdminInstitutionMixin,
+    ModelAdminNextUrlRedirectMixin,
     SimpleHistoryAdmin,
     TemplatesModelAdminMixin,
 )
@@ -37,23 +38,15 @@ class CoronavirusKapAdmin(
     ModelAdminInstitutionMixin,
     CoronaKapModelAdminMixin,
     FormLabelModelAdminMixin,
-    BaseModelAdminRedirectMixin,
+    ModelAdminNextUrlRedirectMixin,
     SimpleHistoryAdmin,
 ):
     form = CoronavirusKapForm
 
     show_object_tools = True
 
-    redirect_url_name = getattr(settings, "SARSCOV2_REDIRECT_URL_NAME", None)
-
     list_filter = ("crf_status", "report_datetime", *audit_fields)
 
     # add_form_template = "admin/change_form.html"
     # change_form_template = "admin/change_form.html"
     # change_list_template = "admin/change_list.html"
-
-    def redirect_url(self, request, obj, post_url_continue=None):
-        if self.redirect_url_name:
-            redirect_url = url_names.get(self.redirect_url_name)
-            return reverse(redirect_url)
-        return None
