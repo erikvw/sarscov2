@@ -7,6 +7,7 @@ from edc_constants.choices import (
     YES_NO_NA,
     YES_NO_UNKNOWN,
 )
+from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
 
 from ..choices import (
@@ -15,7 +16,8 @@ from ..choices import (
     HEALTH_INSURANCE,
     HEALTH_OPINION,
     LIKELIHOOD_SCALE,
-    PROFESSIONS,
+    EMPLOYMENT,
+    UNPAID_WORK,
     WORRY_SCALE,
 )
 
@@ -76,6 +78,7 @@ class CoronaKapDiseaseModelMixin(models.Model):
         ),
         max_length=25,
         choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
     )
 
     diabetic_missed_doses = models.IntegerField(
@@ -109,6 +112,7 @@ class CoronaKapDiseaseModelMixin(models.Model):
         ),
         max_length=25,
         choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
     )
 
     hypertensive_missed_doses = models.IntegerField(
@@ -140,8 +144,28 @@ class CoronaKapModelMixin(models.Model):
     )
 
     employment_status = models.CharField(
-        verbose_name="Are you employed?", max_length=25, choices=EMPLOYMENT_STATUS,
+        verbose_name="Are you employed / working?",
+        max_length=25,
+        choices=EMPLOYMENT_STATUS,
     )
+
+    employment = models.CharField(
+        verbose_name="What type of <u>paid</u> work / employment are you involved in?",
+        max_length=25,
+        choices=EMPLOYMENT,
+        default=NOT_APPLICABLE,
+    )
+
+    employment_other = edc_models.OtherCharField(null=True, blank=True)
+
+    unpaid_work = models.CharField(
+        verbose_name="What type of <u>unpaid</u> work are you involved in?",
+        max_length=25,
+        choices=UNPAID_WORK,
+        default=NOT_APPLICABLE,
+    )
+
+    unpaid_work_other = edc_models.OtherCharField(null=True, blank=True)
 
     household_size = models.IntegerField(
         verbose_name="How many people live together in your home / dwelling?",
@@ -157,14 +181,6 @@ class CoronaKapModelMixin(models.Model):
         ),
         help_text="e.g. travelling for work, staying with family",
     )
-
-    employment = models.CharField(
-        verbose_name="What type of employment are you involved in?",
-        max_length=25,
-        choices=PROFESSIONS,
-    )
-
-    employment_other = edc_models.OtherCharField(null=True, blank=True)
 
     education = models.CharField(
         verbose_name="What is your highest completed education level?",
@@ -239,6 +255,7 @@ class CoronaKapModelMixin(models.Model):
     )
 
     # PART 4
+
     spread_droplets = models.CharField(
         verbose_name=(
             "Coronavirus spreads by droplets from cough and sneezes "
@@ -370,6 +387,10 @@ class CoronaKapModelMixin(models.Model):
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
+    take_herbs_prevention = models.CharField(
+        verbose_name="Taking herbs", max_length=25, choices=TRUE_FALSE_DONT_KNOW,
+    )
+
     avoid_crowds = models.CharField(
         verbose_name="Avoid crowded places such as markets and public transport",
         max_length=25,
@@ -385,6 +406,13 @@ class CoronaKapModelMixin(models.Model):
         verbose_name="Keep at least a 2 metre distance from people",
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
+    )
+
+    other_actions_prevention = models.TextField(
+        verbose_name="Any <u>other</u> things you would do to <u>protect</u> yourself from Coronavirus?",
+        max_length=250,
+        null=True,
+        blank=True,
     )
 
     # PART 7
@@ -408,6 +436,11 @@ class CoronaKapModelMixin(models.Model):
         max_length=25,
         choices=LIKELIHOOD_SCALE,
     )
+
+    take_herbs_symptoms = models.CharField(
+        verbose_name="Take herbs", max_length=25, choices=LIKELIHOOD_SCALE,
+    )
+
     stop_chronic_meds = models.CharField(
         verbose_name="Stop taking your chronic disease medicines",
         max_length=25,
@@ -425,6 +458,13 @@ class CoronaKapModelMixin(models.Model):
         verbose_name="Go to a traditional healer instead of a doctor",
         max_length=25,
         choices=LIKELIHOOD_SCALE,
+    )
+
+    other_actions_symptoms = models.TextField(
+        verbose_name="Any <u>other</u> things you would do if you had <u>symptoms</u> of Coronavirus?",
+        max_length=250,
+        null=True,
+        blank=True,
     )
 
     class Meta:

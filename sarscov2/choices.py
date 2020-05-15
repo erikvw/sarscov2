@@ -1,23 +1,34 @@
-from edc_constants.constants import OTHER
+from edc_constants.constants import NOT_APPLICABLE, OTHER
+
+from .constants import NOT_WORKING_FOR_PAY, WORKING_FOR_PAY
 
 EMPLOYMENT_STATUS = (
-    ("working_for_pay", "Working for pay"),
-    ("unemployed", "Unemployed"),
-    ("not_working_for_pay", "Not working for pay (housewife, retired...)"),
+    (WORKING_FOR_PAY, "Working for pay / Employed"),
+    (NOT_WORKING_FOR_PAY, "Not working for pay / Unemployed"),
 )
 
-PROFESSIONS = (
+EMPLOYMENT = (
     ("professional", "Professional (e.g. office"),
     ("labourer", "Labourer"),
-    ("housewife_retired", "Housewife, Retired"),
     ("self_employed", "Small business, self-employed"),
+    (NOT_APPLICABLE, "Not applicable"),
+    (OTHER, "Other, specify below"),
+)
+
+
+UNPAID_WORK = (
+    ("volunteer", "Volunteer"),
+    ("unpaid_intern", "Unpaid Intern"),
+    ("housewife", "Housewife"),
+    ("retired", "Retired"),
+    (NOT_APPLICABLE, "Not applicable"),
     (OTHER, "Other, specify below"),
 )
 
 EDUCATION_LEVELS = (
     ("primary", "Up to primary"),
-    ("secondary", "Up to high school"),
-    ("tertiary", "University, college"),
+    ("secondary", "Up to secondary"),
+    ("tertiary", "Tertiary (University, college)"),
     ("no_education", "No education"),
 )
 

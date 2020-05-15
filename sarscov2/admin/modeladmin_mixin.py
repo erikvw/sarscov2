@@ -1,9 +1,13 @@
 from django_audit_fields.admin import audit_fieldset_tuple
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from edc_crf.fieldset import crf_status_fieldset
 
 fieldsets = [
-    (None, {"fields": ("subject_visit", "report_datetime")}),
+    (
+        "Coronavirus Knowledge, Attitudes, and Practices",
+        {"fields": ("screening_identifier", "report_datetime")},
+    ),
     (
         "Disease Burden: HIV",
         {
@@ -39,7 +43,7 @@ fieldsets = [
     ),
     (
         "Indicators",
-        {"fields": ("weight", "height", "sys_blood_pressure", "dia_blood_pressure",)},
+        {"fields": ("height", "weight", "sys_blood_pressure", "dia_blood_pressure",)},
     ),
     (
         "Economics",
@@ -49,6 +53,8 @@ fieldsets = [
                 "employment_status",
                 "employment",
                 "employment_other",
+                "unpaid_work",
+                "unpaid_work_other",
                 "education",
                 "household_size",
                 "nights_away",
@@ -124,10 +130,12 @@ fieldsets = [
                 "alcohol",
                 "wash_hands",
                 "hand_sanitizer",
+                "take_herbs_prevention",
                 "avoid_crowds",
                 "face_masks",
                 "stay_indoors",
                 "social_distance",
+                "other_actions_prevention",
             ),
         },
     ),
@@ -144,12 +152,15 @@ fieldsets = [
                 "visit_clinic",
                 "call_nurse",
                 "take_meds",
+                "take_herbs_symptoms",
                 "stop_chronic_meds",
                 "visit_religious",
                 "visit_traditional",
+                "other_actions_symptoms",
             ),
         },
     ),
+    crf_status_fieldset,
     audit_fieldset_tuple,
 ]
 
@@ -200,9 +211,32 @@ class CoronaKapModelAdminMixin:
         "symptoms_fever": admin.VERTICAL,
         "symptoms_headache": admin.VERTICAL,
         "symptoms_smell": admin.VERTICAL,
+        "take_herbs_prevention": admin.VERTICAL,
+        "take_herbs_symptoms": admin.VERTICAL,
         "take_meds": admin.VERTICAL,
+        "unpaid_work": admin.VERTICAL,
         "visit_clinic": admin.VERTICAL,
         "visit_religious": admin.VERTICAL,
         "visit_traditional": admin.VERTICAL,
         "wash_hands": admin.VERTICAL,
+        "crf_status": admin.VERTICAL,
     }
+
+    list_display = (
+        "human_screening_identifier",
+        "site",
+        "report_datetime",
+        "protocol",
+        "user_created",
+        "created",
+    )
+
+    search_fields = [
+        "screening_identifier",
+        "subject_identifier",
+    ]
+
+    def human_screening_identifier(self, obj):
+        return f"{obj.screening_identifier[0:4]}-{obj.screening_identifier[4:]}"
+
+    human_screening_identifier.short_description = "screening identifier"
