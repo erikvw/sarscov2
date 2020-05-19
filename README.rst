@@ -3,9 +3,7 @@ sarscov2
 
 Add to an EDC
 
-In this example we add the new model to the ``meta_subject`` app of the ``meta_edc`` project.
-
-Add ``sarscov2`` to your settings ``INSTALLED_APPS``
+Add to ``INSTALLED_APPS``:
 
 .. code-block:: python
 
@@ -13,92 +11,9 @@ Add ``sarscov2`` to your settings ``INSTALLED_APPS``
         ...
         "sarscov2.apps.AppConfig",
         ...
-    ]
+        ]
 
-Use the model mixin to create the model in your app
-
-.. code-block:: python
-
-    from edc_crf.model_mixins import CrfModelMixin
-    from edc_model import models as edc_models
-
-    from sarscov2.model_mixins import CoronaKapModelMixin
-
-
-    class CoronaKap(CrfModelMixin, CoronaKapModelMixin, edc_models.BaseUuidModel):
-        class Meta:
-            verbose_name = "Corona Knowledge, Attitudes, and Practices"
-            verbose_name_plural = "Corona Knowledge, Attitudes, and Practices"
-
-Create a form using the ``CoronaKapFormValidator``
-
-.. code-block:: python
-
-    from django import forms
-    from edc_crf.modelform_mixins import CrfModelFormMixin
-    from sarscov2.forms import CoronaKapFormValidator
-
-    from ..models import CoronaKap
-
-
-    class CoronaKapForm(CrfModelFormMixin, forms.ModelForm):
-
-        form_validator_cls = CoronaKapFormValidator
-
-        class Meta:
-            model = CoronaKap
-            fields = "__all__"
-
-
-Create an admin class with your new model and form. In this case the new model
-is a CRF model.
-
-.. code-block:: python
-
-    from django.contrib import admin
-    from edc_form_label import FormLabelModelAdminMixin
-    from edc_model_admin import SimpleHistoryAdmin
-    from sarscov2.admin import CoronaKapModelAdminMixin
-
-    from ..admin_site import meta_subject_admin
-    from ..forms import CoronaKapForm
-    from ..models import CoronaKap
-    from .modeladmin import CrfModelAdminMixin
-
-
-    @admin.register(CoronaKap, site=meta_subject_admin)
-    class CoronaKapAdmin(
-        CrfModelAdminMixin,
-        CoronaKapModelAdminMixin,
-        FormLabelModelAdminMixin,
-        SimpleHistoryAdmin,
-    ):
-        form = CoronaKapForm
-
-Add the model to your auth codenames. For example, to the clinic group of ``meta_subject`` we added
-
-.. code-block:: python
-
-    # clinic group of codenames
-    # ...
-    "meta_subject.add_coronakap",
-    "meta_subject.change_coronakap",
-    "meta_subject.delete_coronakap",
-    "meta_subject.view_coronakap",
-    "meta_subject.view_historicalcoronakap",
-    "sarscov2.view_coronakapinformationsources",
-    # ...
-    # auditor group of codenames
-    # ...
-    "meta_subject.view_coronakap",
-    "meta_subject.view_historicalcoronakap",
-    # ...
-
-
-
-Add the CRF to the visit schedule
-
-Since the model is being added after the trial started, we add it to both the DAY1 visit CRFs and the PRN CRFs.
+Add the CRF to the visit schedule as a PRN, for example:
 
 .. code-block:: python
 
@@ -108,21 +23,21 @@ Since the model is being added after the trial started, we add it to both the DA
         name="prn",
     )
 
-    crfs_d1 = FormsCollection(
-        ...
-        Crf(show_order=70, model="meta_subject.coronakap"),
-        name="day1",
-    )
+.. code-block:: bash
 
-If you are using the list model, add to urls
+    python manage.py makemigrations
+    python manage.py migrate
 
-.. code-block:: python
+To include in a screening or subject lsitboard:
 
-    from sarscov2.admin_site import sarscov2_admin
+.. code-block:: html
 
-    ...
-    path("admin/", sarscov2_admin.urls),
-    path("sarscov2/", include("sarscov2.urls")),
-    ...
-
-run ``makemigrations`` and ``migrate``.
+        {% if perms.sarscov2 %}
+            {% if result.coronavirus_kap %}
+            <a class="btn btn-sm btn-success" title="Edit Coronavirus KAP"
+               href="{% url 'sarscov2_admin:sarscov2_coronaviruskap_change' result.coronavirus_kap.id %}?next=meta_dashboard:screening_listboard_url">Edit</a>
+            {% else %}
+            <a class="btn btn-sm btn-warning" title="Add Coronavirus KAP"
+               href="{% url 'sarscov2_admin:sarscov2_coronaviruskap_add' %}?screening_identifier={{result.screening_identifier}}&next=meta_dashboard:screening_listboard_url">Add</a>
+            {% endif %}
+        {% endif %}
