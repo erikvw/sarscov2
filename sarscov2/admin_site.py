@@ -1,21 +1,26 @@
 from django.contrib.admin import AdminSite as DjangoAdminSite
 from django.contrib.sites.shortcuts import get_current_site
-from edc_sites.models import SiteProfile
+from django.apps import apps as django_apps
+from django.conf import settings
+
+title = getattr(
+    settings,
+    "SARSCOV2_TITLE",
+    django_apps.get_app_config(settings.APP_NAME).verbose_name,
+)
 
 
 class AdminSite(DjangoAdminSite):
 
-    site_title = "SARS-COV-2"
-    site_header = "SARS-COV-2"
-    index_title = "SARS-COV-2"
+    site_title = title
+    site_header = title
+    index_title = title
     site_url = "/administration/"
 
     def each_context(self, request):
         context = super().each_context(request)
-        title = SiteProfile.objects.get(site=get_current_site(request)).title
         context.update(global_site=get_current_site(request))
-        label = "SARS-COV-2"
-        context.update(site_title=label, site_header=label, index_title=label)
+        context.update(site_title=title, site_header=title, index_title=title)
         return context
 
 

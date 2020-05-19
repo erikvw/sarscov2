@@ -150,7 +150,9 @@ class CoronaKapModelMixin(models.Model):
     )
 
     employment = models.CharField(
-        verbose_name="What type of <u>paid</u> work / employment are you involved in?",
+        verbose_name=mark_safe(
+            "What type of <u>paid</u> work / employment are you involved in?"
+        ),
         max_length=25,
         choices=EMPLOYMENT,
         default=NOT_APPLICABLE,
@@ -159,7 +161,7 @@ class CoronaKapModelMixin(models.Model):
     employment_other = edc_models.OtherCharField(null=True, blank=True)
 
     unpaid_work = models.CharField(
-        verbose_name="What type of <u>unpaid</u> work are you involved in?",
+        verbose_name=mark_safe("What type of <u>unpaid</u> work are you involved in?"),
         max_length=25,
         choices=UNPAID_WORK,
         default=NOT_APPLICABLE,
@@ -219,7 +221,7 @@ class CoronaKapModelMixin(models.Model):
     )
 
     personal_infection_likelihood = models.CharField(
-        verbose_name=(
+        verbose_name=mark_safe(
             "How likely do you think it is that <u>you</u> "
             "will get sick from coronavirus?"
         ),
@@ -228,7 +230,7 @@ class CoronaKapModelMixin(models.Model):
     )
 
     family_infection_likelihood = models.CharField(
-        verbose_name=(
+        verbose_name=mark_safe(
             "How likely do you think it is that <u>someone in your family</u> "
             "will get sick from coronavirus?"
         ),
@@ -237,7 +239,7 @@ class CoronaKapModelMixin(models.Model):
     )
 
     perc_die = models.IntegerField(
-        verbose_name=(
+        verbose_name=mark_safe(
             "Out of every 100 people who get infected with "
             "coronavirus, how many do you think <u>will die</u>?"
         ),
@@ -246,7 +248,7 @@ class CoronaKapModelMixin(models.Model):
     )
 
     perc_mild_symptom = models.IntegerField(
-        verbose_name=(
+        verbose_name=mark_safe(
             "Out of every 100 people who get infected with coronavirus, "
             "how many do you think <u>will have only mild symptoms</u>?"
         ),
@@ -289,13 +291,15 @@ class CoronaKapModelMixin(models.Model):
     )
 
     severity_hiv = models.CharField(
-        verbose_name="Coronavirus is more severe in people with <u>HIV infection</u>",
+        verbose_name=mark_safe(
+            "Coronavirus is more severe in people with <u>HIV infection</u>"
+        ),
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
 
     severity_diabetes_hypertension = models.CharField(
-        verbose_name=(
+        verbose_name=mark_safe(
             "Coronavirus is more severe "
             "in people with <u>diabetes</u> and/or <u>hypertension</u>"
         ),
@@ -309,7 +313,9 @@ class CoronaKapModelMixin(models.Model):
         choices=TRUE_FALSE_DONT_KNOW,
     )
     lives_on_materials = models.CharField(
-        verbose_name="Coronavirus can live on clothes, plastics, cardboard for a day or more",
+        verbose_name=(
+            "Coronavirus can live on clothes, plastics, cardboard for a day or more"
+        ),
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
@@ -409,7 +415,10 @@ class CoronaKapModelMixin(models.Model):
     )
 
     other_actions_prevention = models.TextField(
-        verbose_name="Any <u>other</u> things you would do to <u>protect</u> yourself from Coronavirus?",
+        verbose_name=mark_safe(
+            "Any <u>other</u> things you would do to <u>protect</u> yourself "
+            "from Coronavirus?"
+        ),
         max_length=250,
         null=True,
         blank=True,
@@ -461,7 +470,10 @@ class CoronaKapModelMixin(models.Model):
     )
 
     other_actions_symptoms = models.TextField(
-        verbose_name="Any <u>other</u> things you would do if you had <u>symptoms</u> of Coronavirus?",
+        verbose_name=mark_safe(
+            "Any <u>other</u> things you would do if you had <u>symptoms</u> "
+            "of Coronavirus?"
+        ),
         max_length=250,
         null=True,
         blank=True,
