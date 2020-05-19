@@ -1,7 +1,7 @@
 sarscov2
 ========
 
-Add to an EDC
+Add to an EDC_, for example the meta_edc_ for the META Trial.
 
 Add to ``INSTALLED_APPS``:
 
@@ -41,3 +41,8 @@ To include in a screening or subject lsitboard:
                href="{% url 'sarscov2_admin:sarscov2_coronaviruskap_add' %}?screening_identifier={{result.screening_identifier}}&next=meta_dashboard:screening_listboard_url">Add</a>
             {% endif %}
         {% endif %}
+
+
+.. _EDC: https://github.com/clinicedc
+
+.. _meta_edc: https://meta-trial/meta_edc
