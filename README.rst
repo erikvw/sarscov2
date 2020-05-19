@@ -28,7 +28,7 @@ Add the CRF to the visit schedule as a PRN, for example:
     python manage.py makemigrations
     python manage.py migrate
 
-To include in a screening or subject lsitboard:
+To include in a screening or subject listboard:
 
 .. code-block:: html
 
