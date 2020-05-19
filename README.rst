@@ -1,3 +1,6 @@
+|pypi| |travis| |codecov| 
+
+
 sarscov2
 ========
 
@@ -46,3 +49,12 @@ To include in a screening or subject listboard:
 .. _EDC: https://github.com/clinicedc
 
 .. _meta_edc: https://meta-trial/meta_edc
+
+.. |pypi| image:: https://img.shields.io/pypi/v/sarscov2.svg
+    :target: https://pypi.python.org/pypi/sarscov2
+    
+.. |travis| image:: https://travis-ci.com/erikvw/sarscov2.svg?branch=develop
+    :target: https://travis-ci.com/erikvw/sarscov2
+    
+.. |codecov| image:: https://codecov.io/gh/erikvw/sarscov2/branch/develop/graph/badge.svg
+  :target: https://codecov.io/gh/erikvw/sarscov2
