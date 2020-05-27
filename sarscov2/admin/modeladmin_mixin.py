@@ -6,7 +6,7 @@ from edc_crf.fieldset import crf_status_fieldset
 fieldsets = [
     (
         "Coronavirus Knowledge, Attitudes, and Practices",
-        {"fields": ("screening_identifier", "report_datetime")},
+        {"fields": ("screening_identifier", "report_datetime", "collection_method")},
     ),
     (
         "Disease Burden: HIV",
@@ -172,12 +172,13 @@ class CoronaKapModelAdminMixin:
 
     fieldsets = fieldsets
 
-    filter_horizaontal = ("information_sources",)
+    filter_horizaontal = ("information_sources", "collection_method")
 
     radio_fields = {
         "alcohol": admin.VERTICAL,
         "avoid_crowds": admin.VERTICAL,
         "call_nurse": admin.VERTICAL,
+        "collection_method": admin.VERTICAL,
         "corona_concern": admin.VERTICAL,
         "hiv_pos": admin.VERTICAL,
         "diabetic": admin.VERTICAL,

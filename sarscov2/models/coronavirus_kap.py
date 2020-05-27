@@ -8,6 +8,8 @@ from edc_protocol.validators import datetime_not_before_study_start
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils import get_utcnow
 
+from ..choices import COLLECTION_METHOD_CHOICES
+from ..constants import IN_PERSON
 from ..model_mixins import CoronaKapModelMixin, CoronaKapDiseaseModelMixin
 
 
@@ -33,6 +35,13 @@ class CoronavirusKap(
 
     screening_identifier = models.CharField(
         max_length=50, unique=True, verbose_name="Screening identifier", null=True,
+    )
+
+    collection_method = models.CharField(
+        verbose_name="How was this information collected?",
+        max_length=25,
+        choices=COLLECTION_METHOD_CHOICES,
+        default=IN_PERSON,
     )
 
     report_datetime = models.DateTimeField(

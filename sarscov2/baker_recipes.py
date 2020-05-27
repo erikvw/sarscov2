@@ -4,7 +4,7 @@ from edc_utils import get_utcnow
 from faker import Faker
 from model_bakery.recipe import Recipe
 
-from .constants import NOT_WORKING_FOR_PAY
+from .constants import IN_PERSON, NOT_WORKING_FOR_PAY
 
 fake = Faker()
 
@@ -12,6 +12,7 @@ coronaviruskap_options = dict(
     alcohol=FALSE,
     avoid_crowds=TRUE,
     call_nurse="unlikely",
+    collection_method=IN_PERSON,
     corona_concern="somewhat",
     crf_status=COMPLETE,
     dia_blood_pressure=85,

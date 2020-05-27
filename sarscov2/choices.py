@@ -1,6 +1,12 @@
 from edc_constants.constants import NOT_APPLICABLE, OTHER
 
-from .constants import NOT_WORKING_FOR_PAY, WORKING_FOR_PAY
+from .constants import IN_PERSON, NOT_WORKING_FOR_PAY, REMOTE, WORKING_FOR_PAY
+
+COLLECTION_METHOD_CHOICES = (
+    (IN_PERSON, "In person"),
+    (REMOTE, "Remotely, by telephone"),
+)
+
 
 EMPLOYMENT_STATUS = (
     (WORKING_FOR_PAY, "Working for pay / Employed"),
