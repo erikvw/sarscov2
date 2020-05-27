@@ -1,11 +1,8 @@
 from copy import copy
-from django.conf import settings
 from django.contrib import admin
-from django.urls import reverse
 from django_audit_fields import AUDIT_MODEL_FIELDS
 from django_audit_fields import ModelAdminAuditFieldsMixin
 from django_revision.modeladmin_mixin import ModelAdminRevisionMixin
-from edc_dashboard import url_names
 from edc_form_label import FormLabelModelAdminMixin
 from edc_model_admin import (
     ModelAdminFormAutoNumberMixin,
@@ -15,7 +12,6 @@ from edc_model_admin import (
     SimpleHistoryAdmin,
     TemplatesModelAdminMixin,
 )
-from edc_model_admin.base_model_admin_redirect_mixin import BaseModelAdminRedirectMixin
 from import_export.admin import ExportActionMixin
 
 from ..admin_site import sarscov2_admin

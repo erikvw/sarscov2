@@ -6,7 +6,7 @@ from edc_crf.fieldset import crf_status_fieldset
 fieldsets = [
     (
         "Coronavirus Knowledge, Attitudes, and Practices",
-        {"fields": ("screening_identifier", "report_datetime")},
+        {"fields": ("screening_identifier", "report_datetime", "collection_method")},
     ),
     (
         "Disease Burden: HIV",
@@ -81,9 +81,9 @@ fieldsets = [
         "Knowledge of Coronavirus",
         {
             "description": mark_safe(
-                "<h5><font color='orange'>[Interviewer]:</font> For the questions in this section ask the "
-                "patient the following:</h5><h5><BR><B>What do you know about coronavirus "
-                "Answer True, False or you don't know</B></h5>"
+                "<h5><font color='orange'>[Interviewer]:</font> For the questions "
+                "in this section ask the patient the following:</h5><h5><BR><B>What "
+                "do you know about coronavirus Answer True, False or you don't know</B></h5>"
             ),
             "fields": (
                 "spread_droplets",
@@ -101,9 +101,10 @@ fieldsets = [
         "Symptoms of Coronavirus",
         {
             "description": mark_safe(
-                "<h5><font color='orange'>[Interviewer]:</font> For the questions in this section ask the "
-                "patient the following:</h5><h5><BR><B>Do you think any of the following symptoms are "
-                "linked with coronavirus infection? Answer True, False or you don't know</B></h5>"
+                "<h5><font color='orange'>[Interviewer]:</font> For the questions in "
+                "this section ask the patient the following:</h5><h5><BR><B>Do you "
+                "think any of the following symptoms are linked with coronavirus infection? "
+                "Answer True, False or you don't know</B></h5>"
             ),
             "fields": (
                 "symptoms_fever",
@@ -121,9 +122,10 @@ fieldsets = [
         "Protecting yourself",
         {
             "description": mark_safe(
-                "<h5><font color='orange'>[Interviewer]:</font> For the questions in this section ask the "
-                "patient the following:</h5><h5><BR><B>Do you think the following can protect <u>you</u> "
-                "against the coronavirus? True, False or you don't know.</B></h5>"
+                "<h5><font color='orange'>[Interviewer]:</font> For the questions in this "
+                "section ask the patient the following:</h5><h5><BR><B>Do you think the "
+                "following can protect <u>you</u> against the coronavirus? True, False or "
+                "you don't know.</B></h5>"
             ),
             "fields": (
                 "hot_drinks",
@@ -143,9 +145,10 @@ fieldsets = [
         "Your response to symptoms",
         {
             "description": mark_safe(
-                "<h5><font color='orange'>[Interviewer]:</font> For the questions in this section ask the "
-                "patient the following:</h5><h5><BR><B>If you had symptoms "
-                "of coronavirus, how likely are you to do any of the following?</B></h5>"
+                "<h5><font color='orange'>[Interviewer]:</font> For the questions in this "
+                "section ask the patient the following:</h5><h5><BR><B>If you had "
+                "symptoms of coronavirus, how likely are you to do any of the following?"
+                "</B></h5>"
             ),
             "fields": (
                 "stay_home",
@@ -169,12 +172,13 @@ class CoronaKapModelAdminMixin:
 
     fieldsets = fieldsets
 
-    filter_horizaontal = ("information_sources",)
+    filter_horizaontal = ("information_sources", "collection_method")
 
     radio_fields = {
         "alcohol": admin.VERTICAL,
         "avoid_crowds": admin.VERTICAL,
         "call_nurse": admin.VERTICAL,
+        "collection_method": admin.VERTICAL,
         "corona_concern": admin.VERTICAL,
         "hiv_pos": admin.VERTICAL,
         "diabetic": admin.VERTICAL,
