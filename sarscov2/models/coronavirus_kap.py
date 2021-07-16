@@ -2,15 +2,14 @@ from django.conf import settings
 from django.db import models
 from edc_crf.crf_status_model_mixin import CrfStatusModelMixin
 from edc_model import models as edc_models
-from edc_model.models import HistoricalRecords
-from edc_model.validators import datetime_not_future
+from edc_model.models import HistoricalRecords, datetime_not_future
 from edc_protocol.validators import datetime_not_before_study_start
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils import get_utcnow
 
 from ..choices import COLLECTION_METHOD_CHOICES
 from ..constants import IN_PERSON
-from ..model_mixins import CoronaKapModelMixin, CoronaKapDiseaseModelMixin
+from ..model_mixins import CoronaKapDiseaseModelMixin, CoronaKapModelMixin
 
 
 class CoronaKapManager(models.Manager):
@@ -30,11 +29,17 @@ class CoronavirusKap(
 ):
 
     subject_identifier = models.CharField(
-        max_length=50, unique=True, verbose_name="Subject identifier", null=True,
+        max_length=50,
+        unique=True,
+        verbose_name="Subject identifier",
+        null=True,
     )
 
     screening_identifier = models.CharField(
-        max_length=50, unique=True, verbose_name="Screening identifier", null=True,
+        max_length=50,
+        unique=True,
+        verbose_name="Screening identifier",
+        null=True,
     )
 
     collection_method = models.CharField(
@@ -54,7 +59,10 @@ class CoronavirusKap(
         ),
     )
 
-    protocol = models.CharField(max_length=50, default=settings.APP_NAME,)
+    protocol = models.CharField(
+        max_length=50,
+        default=settings.APP_NAME,
+    )
 
     on_site = CurrentSiteManager()
 
@@ -65,6 +73,6 @@ class CoronavirusKap(
     def __str__(self):
         return self.screening_identifier
 
-    class Meta:
+    class Meta(edc_models.BaseUuidModel.Meta):
         verbose_name = "Coronavirus KAP"
         verbose_name_plural = "Coronavirus KAP"

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "edc_dashboard.apps.AppConfig",
     "edc_model_admin.apps.AppConfig",
     "edc_sites.apps.AppConfig",
+    "edc_randomization.apps.AppConfig",
     "edc_registration.apps.AppConfig",
     "sarscov2.apps.AppConfig",
 ]
@@ -93,9 +94,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 
@@ -130,3 +137,5 @@ AUTO_CREATE_KEYS = False
 SITE_ID = SiteID(default=1)
 CRF_STATUS_DEFAULT = COMPLETE
 EDC_PROTOCOL_NUMBER = "100"
+EDC_RANDOMIZATION_LIST_PATH = ""
+SILENCED_SYSTEM_CHECKS = ["sites.E101"]
