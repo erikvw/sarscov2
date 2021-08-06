@@ -27,6 +27,6 @@ class TestCoranavirus(TestCase):
             screening_identifier=screening_identifier,
         )
         opts = {k: v for k, v in coronaviruskap_options.items() if v is not None}
-        url = reverse("admin:sarscov2_coronaviruskap_add")
+        url = reverse("sarscov2_admin:sarscov2_coronaviruskap_add")
         response = self.client.post(url, opts)
         self.assertEqual(response.status_code, 302)
