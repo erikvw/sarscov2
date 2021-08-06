@@ -9,6 +9,12 @@ from edc_constants.choices import (
 )
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
+from edc_vitals.models import (
+    SystolicPressureField,
+    DiastolicPressureField,
+    HeightField,
+    WeightField,
+)
 
 from ..choices import (
     EDUCATION_LEVELS,
@@ -124,13 +130,13 @@ class CoronaKapDiseaseModelMixin(models.Model):
         blank=True,
     )
 
-    weight = edc_models.WeightField(null=True, blank=True)
+    weight = WeightField(null=True, blank=True)
 
-    height = edc_models.HeightField(null=True, blank=True)
+    height = HeightField(null=True, blank=True)
 
-    sys_blood_pressure = edc_models.SystolicPressureField(null=True, blank=True)
+    sys_blood_pressure = SystolicPressureField(null=True, blank=True)
 
-    dia_blood_pressure = edc_models.DiastolicPressureField(null=True, blank=True)
+    dia_blood_pressure = DiastolicPressureField(null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -140,7 +146,9 @@ class CoronaKapModelMixin(models.Model):
 
     # PART2
     married = models.CharField(
-        verbose_name="Are you currently married?", max_length=25, choices=YES_NO,
+        verbose_name="Are you currently married?",
+        max_length=25,
+        choices=YES_NO,
     )
 
     employment_status = models.CharField(
@@ -330,10 +338,14 @@ class CoronaKapModelMixin(models.Model):
 
     # PART 5
     symptoms_fever = models.CharField(
-        verbose_name="Fever", max_length=25, choices=TRUE_FALSE_DONT_KNOW,
+        verbose_name="Fever",
+        max_length=25,
+        choices=TRUE_FALSE_DONT_KNOW,
     )
     symptoms_headache = models.CharField(
-        verbose_name="Headache", max_length=25, choices=TRUE_FALSE_DONT_KNOW,
+        verbose_name="Headache",
+        max_length=25,
+        choices=TRUE_FALSE_DONT_KNOW,
     )
 
     symptoms_dry_cough = models.CharField(
@@ -343,7 +355,9 @@ class CoronaKapModelMixin(models.Model):
     )
 
     symptoms_body_aches = models.CharField(
-        verbose_name="Body aches", max_length=25, choices=TRUE_FALSE_DONT_KNOW,
+        verbose_name="Body aches",
+        max_length=25,
+        choices=TRUE_FALSE_DONT_KNOW,
     )
 
     symptoms_smell = models.CharField(
@@ -394,7 +408,9 @@ class CoronaKapModelMixin(models.Model):
         choices=TRUE_FALSE_DONT_KNOW,
     )
     take_herbs_prevention = models.CharField(
-        verbose_name="Taking herbs", max_length=25, choices=TRUE_FALSE_DONT_KNOW,
+        verbose_name="Taking herbs",
+        max_length=25,
+        choices=TRUE_FALSE_DONT_KNOW,
     )
 
     avoid_crowds = models.CharField(
@@ -403,10 +419,14 @@ class CoronaKapModelMixin(models.Model):
         choices=TRUE_FALSE_DONT_KNOW,
     )
     face_masks = models.CharField(
-        verbose_name="Wear a face mask", max_length=25, choices=TRUE_FALSE_DONT_KNOW,
+        verbose_name="Wear a face mask",
+        max_length=25,
+        choices=TRUE_FALSE_DONT_KNOW,
     )
     stay_indoors = models.CharField(
-        verbose_name="Stay indoors", max_length=25, choices=TRUE_FALSE_DONT_KNOW,
+        verbose_name="Stay indoors",
+        max_length=25,
+        choices=TRUE_FALSE_DONT_KNOW,
     )
     social_distance = models.CharField(
         verbose_name="Keep at least a 2 metre distance from people",
@@ -447,7 +467,9 @@ class CoronaKapModelMixin(models.Model):
     )
 
     take_herbs_symptoms = models.CharField(
-        verbose_name="Take herbs", max_length=25, choices=LIKELIHOOD_SCALE,
+        verbose_name="Take herbs",
+        max_length=25,
+        choices=LIKELIHOOD_SCALE,
     )
 
     stop_chronic_meds = models.CharField(
