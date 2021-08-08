@@ -23,8 +23,8 @@ import sarscov2.models.coronavirus_kap
 
 try:
     import edc_model.models.fields.blood_pressure
-    import edc_model.models.fields.height
-    import edc_model.models.fields.weight
+    import edc_vitals.models.fields.height
+    import edc_vitals.models.fields.weight
 except (ModuleNotFoundError, AttributeError):
     import edc_vitals.models.fields.blood_pressure
     import edc_vitals.models.fields.height
