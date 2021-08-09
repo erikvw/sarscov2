@@ -1,2 +1,2 @@
-edc==0.3.34
+edc==0.3.37
 git+https://github.com/erikvw/django-import-export@get_export_admin_action
