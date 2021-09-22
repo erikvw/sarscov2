@@ -1,7 +1,7 @@
 from copy import copy
+
 from django.contrib import admin
-from django_audit_fields import AUDIT_MODEL_FIELDS
-from django_audit_fields import ModelAdminAuditFieldsMixin
+from django_audit_fields import AUDIT_MODEL_FIELDS, ModelAdminAuditFieldsMixin
 from django_revision.modeladmin_mixin import ModelAdminRevisionMixin
 from edc_form_label import FormLabelModelAdminMixin
 from edc_model_admin import (
@@ -20,7 +20,6 @@ from ..models import CoronavirusKap
 from .modeladmin_mixin import CoronaKapModelAdminMixin
 
 audit_fields = copy(AUDIT_MODEL_FIELDS)
-audit_fields.remove("id")
 
 
 @admin.register(CoronavirusKap, site=sarscov2_admin)
